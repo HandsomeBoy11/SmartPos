@@ -1,0 +1,169 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.jakewharton:butterknife-gradle-plugin:8.4.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+ext{
+    // Android
+    androidCompileSdkVersion = 26
+    androidBuildToolsVersion = "26.0.2"
+    androidMinSdkVersion = 16
+    androidTargetSdkVersion = 26
+
+    kotlinVersion = '1.2.31'
+
+    // MD Libraries Release
+    mdLibVersionCode = 1
+    mdLibVersionName = "1.0.0"
+
+    // Libraries
+    // Android Libraries
+    defaultAndroidLibVersion = '26.1.0'
+    appcompatV7Version = defaultAndroidLibVersion
+    supportV4Version = defaultAndroidLibVersion
+    recyclerViewVersion = defaultAndroidLibVersion
+    cardViewVersion = defaultAndroidLibVersion
+    gridLayoutVersion = defaultAndroidLibVersion
+    materialDesignVersion = defaultAndroidLibVersion
+    constraintLayoutVersion = '1.1.0'
+    multidexVersion = '1.0.1'
+    archLifecycleExtensions = '1.0.0'
+    archLifecycleCompiler = '1.0.0'
+
+    rxbindingVersion = '2.0.0'
+
+    // Network
+    retrofitVersion = '2.3.0'
+    retrofitAdapterRxjava2Version = '2.3.0'
+    retrofitConverterGsonVersion = '2.3.0'
+    okhttp3LogInterceptorVersion = '3.9.0'
+    okhttp3Version = "3.9.0"
+    gsonVersion = '2.8.2'
+    // RxJava
+    rxJavaVersion = '2.1.6'
+    rxAndroidVersion = '2.0.1'
+    // Util
+    timberVersion = '4.6.0'
+    crashReportVersion = '1.4.0'
+    tinkerLibVersion = '1.9.9'
+    stethoVersion = '1.5.0'
+    stethoRealmVersion = '2.2.2'
+    umCommonVersion = '2.0.0'
+    umAnalyticsVersion = '8.0.0'
+    // View
+    swipyVersion = '1.2.3'
+    materialDateTimePickerVersion = '3.2.1'
+    toggleButtonGroupVersion = '1.0.2'
+    notificationBadgeVersion = '0.2.0'
+    flowLayoutVersion = '1.1.0'
+    // Misc
+    frescoVersion = '1.5.0'
+    zxingAndroidEmbeddedVersion = '3.5.0'
+    glideVersion = '4.0.0'
+    glideTransformationsVersion = '3.0.1'
+    eventbusVersion = '3.0.0'
+    eventbusAnnotationVersion = "3.0.1"
+    // Pos
+    sunmiUiVersion = '1.1.22'
+    sunmiDsLibVersion = '1.0.9'
+
+    // Testing
+    jUnitVersion = '4.12'
+    espressoCoreVersion = '3.0.1'
+    runnerVersion = '1.0.1'
+    //换肤
+    skinVersion = '3.1.1'
+    //加载Json动画
+    lottieVersion = '1.5.3'
+    //banner
+    banner='1.4.10'  //最新版本'
+
+
+    commonDependencies = [
+            kotlinStdlibJdk7           : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
+            kotlinReflect              : "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}",
+
+            multidex                   : "com.android.support:multidex:${multidexVersion}",
+            appcompatV7                : "com.android.support:appcompat-v7:${appcompatV7Version}",
+            supportV4                  : "com.android.support:support-v4:${supportV4Version}",
+            lifecycleExtensions        : "android.arch.lifecycle:extensions:${archLifecycleExtensions}",
+            lifecycleCompiler          : "android.arch.lifecycle:compiler:${archLifecycleCompiler}",
+            recyclerView               : "com.android.support:recyclerview-v7:${recyclerViewVersion}",
+            cardView                   : "com.android.support:cardview-v7:${cardViewVersion}",
+            gridLayout                 : "com.android.support:gridlayout-v7:${gridLayoutVersion}",
+            constraintLayout           : "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}",
+            materialDesign             : "com.android.support:design:${materialDesignVersion}",
+
+            rxJava                     : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
+            rxAndroid                  : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
+            retrofit                   : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            retrofitAdapterRxjava2     : "com.squareup.retrofit2:adapter-rxjava2:${retrofitAdapterRxjava2Version}",
+            retrofitConverterGson      : "com.squareup.retrofit2:converter-gson:${retrofitConverterGsonVersion}",
+            okhttp3LogInterceptor      : "com.squareup.okhttp3:logging-interceptor:${okhttp3LogInterceptorVersion}",
+            okhttp3                    : "com.squareup.okhttp3:okhttp:${okhttp3Version}",
+
+            gson                       : "com.google.code.gson:gson:${gsonVersion}",
+            swipy                      : "com.github.omadahealth:swipy:${swipyVersion}@aar",
+            materialDateTimePicker     : "com.wdullaer:materialdatetimepicker:${materialDateTimePickerVersion}",
+            toggleButtonGroup          : "com.nex3z:toggle-button-group:${toggleButtonGroupVersion}",
+            notificationBadge          : "com.nex3z:notification-badge:${notificationBadgeVersion}",
+            flowLayout                 : "com.nex3z:flow-layout:${flowLayoutVersion}",
+            zxingAndroidEmbedded       : "com.journeyapps:zxing-android-embedded:${zxingAndroidEmbeddedVersion}",
+            fresco                     : "com.facebook.fresco:fresco:${frescoVersion}",
+
+            timber                     : "com.jakewharton.timber:timber:${timberVersion}",
+            crashReport                : "com.tencent.bugly:crashreport_upgrade:${crashReportVersion}",
+            tinkerLib                  : "com.tencent.tinker:tinker-android-lib:${tinkerLibVersion}",
+            stetho                     : "com.facebook.stetho:stetho:${stethoVersion}",
+            stethoOkhttp3              : "com.facebook.stetho:stetho-okhttp3:${stethoVersion}",
+            stethoRealm                : "com.uphyca:stetho_realm:${stethoRealmVersion}",
+            umCommon                   : "com.umeng.umsdk:common:${umCommonVersion}",
+            umAnalytics                : "com.umeng.umsdk:analytics:${umAnalyticsVersion}",
+
+            sunmiUiVersion             : "com.sunmi:sunmiui:${sunmiUiVersion}",
+            sunmiDsLibVersion          : "com.sunmi:DS_Lib:${sunmiDsLibVersion}",  // 商米 T1 客显
+            glide                      : "com.github.bumptech.glide:glide:${glideVersion}",
+            glideAnnotation            : "com.github.bumptech.glide:compiler:${glideVersion}",
+            glideOkhttp3               : "com.github.bumptech.glide:okhttp3-integration:${glideVersion}",
+            glideTransformations       : "jp.wasabeef:glide-transformations:${glideTransformationsVersion}",
+            lottie                     : "com.airbnb.android:lottie:${lottieVersion}",
+            banner                     : "com.youth.banner:banner:${banner}",
+
+            eventbus                   : "org.greenrobot:eventbus:${eventbusVersion}",
+            eventbusAnnotation         : "org.greenrobot:eventbus-annotation-processor:${eventbusAnnotationVersion}",
+
+            skinSupport                : "skin.support:skin-support:${skinVersion}", // skin-support 基础控件支持
+            skinSupportDesign          : "skin.support:skin-support-design:${skinVersion}", // skin-support-design material design 控件支持[可选]
+            skinSupportCardview        : "skin.support:skin-support-cardview:${skinVersion}",  // skin-support-cardview CardView 控件支持[可选]
+            skinSupportConstraintLayout: "skin.support:skin-support-constraint-layout:${skinVersion}",    // skin-support-constraint-layout ConstraintLayout 控件支持[可选]
+
+    ]
+
+    commonTestDependencies = [
+            junit       : "junit:junit:${jUnitVersion}",
+            espressoCore: "com.android.support.test.espresso:espresso-core:${espressoCoreVersion}",
+            runner      : "com.android.support.test:runner:${runnerVersion}",
+    ]
+}

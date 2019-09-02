@@ -1,0 +1,69 @@
+apply plugin: 'com.android.library'
+
+android {
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+    compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
+    buildToolsVersion globalConfiguration["androidBuildToolsVersion"]
+
+
+    defaultConfig {
+        minSdkVersion globalConfiguration["androidMinSdkVersion"]
+        targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
+        versionCode globalConfiguration["mdLibVersionCode"]
+        versionName globalConfiguration["mdLibVersionName"]
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    def dependencies = rootProject.ext.commonDependencies
+    implementation dependencies.appcompatV7
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    //解决编译版本与测试版本不统一问题
+    configurations.all {
+        resolutionStrategy.force 'com.android.support:support-annotations:26.1.0'
+    }
+
+    api dependencies.recyclerView
+    api dependencies.materialDesign
+    // Glide
+    api dependencies.glide
+    annotationProcessor dependencies.glideAnnotation
+    // 高斯模糊和圆角等
+    api dependencies.glideTransformations
+
+    // Retrofit & okHttp
+    api dependencies.retrofit
+    api dependencies.retrofitConverterGson
+    api dependencies.retrofitAdapterRxjava2
+    api dependencies.okhttp3LogInterceptor
+    api dependencies.okhttp3
+
+    //lifecycle
+    def lifecycle_version = "1.1.1"
+    api "android.arch.lifecycle:extensions:$lifecycle_version"
+    api "android.arch.lifecycle:viewmodel:$lifecycle_version"
+    api "android.arch.lifecycle:livedata:$lifecycle_version"
+    api "android.arch.lifecycle:runtime:$lifecycle_version"
+    annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
+    api "android.arch.lifecycle:reactivestreams:$lifecycle_version"
+
+    api 'com.openxu.viewlib:OXViewLib:1.0.2'
+}

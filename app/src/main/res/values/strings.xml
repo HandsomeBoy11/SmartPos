@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">物业缴费App</string>
+    <string name="app_introduce">欢迎使用物业缴费APP</string>
+    <string name="user_name_hint">请输入用户名</string>
+</resources>
