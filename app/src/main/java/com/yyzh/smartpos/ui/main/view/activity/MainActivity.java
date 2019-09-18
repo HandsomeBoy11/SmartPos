@@ -3,6 +3,7 @@ package com.yyzh.smartpos.ui.main.view.activity;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.yyzh.commonlibrary.base.BaseActivity;
 import com.yyzh.commonlibrary.base.BaseFragment;
+import com.yyzh.commonlibrary.utils.LogUtil;
 import com.yyzh.commonlibrary.utils.SPUtils;
 import com.yyzh.smartpos.R;
 import com.yyzh.smartpos.ui.payRecord.view.PayRecoredFragment;
@@ -36,35 +38,11 @@ public class MainActivity extends BaseActivity<MainViewModel> {
 
     @BindView(R.id.tv_des)
     TextView tvDes;
-    @BindView(R.id.tv_project)
-    TextView tvProject;
-    @BindView(R.id.ll_project)
-    LinearLayout llProject;
-    @BindView(R.id.tv_cell)
-    TextView tvCell;
-    @BindView(R.id.ll_cell)
-    LinearLayout llCell;
-    @BindView(R.id.tv_house_num)
-    TextView tvHouseNum;
-    @BindView(R.id.ll_house_num)
-    LinearLayout llHouseNum;
-    @BindView(R.id.et_name)
-    EditText etName;
-    @BindView(R.id.et_phone)
-    EditText etPhone;
-    @BindView(R.id.tv_search)
-    TextView tvSearch;
-    @BindView(R.id.tv_loginout)
-    TextView tvLoginout;
     @BindView(R.id.tv_jiaofei)
     TextView tvJiaofei;
     @BindView(R.id.tv_record)
     TextView tvRecord;
     private long clickTime;
-    private ProjectDialog projectDialog;
-    private List<String> projectList = new ArrayList<>();
-    private CellDialog cellDialog;
-    private CellDialog floorDialog;
 
     private BaseFragment currentFragment;
     private List<BaseFragment> fragments;
@@ -79,75 +57,12 @@ public class MainActivity extends BaseActivity<MainViewModel> {
 
     @Override
     protected void initView() {
-        initDialog();
-    }
 
-    private void initDialog() {
-        if (projectDialog == null) {
-            projectDialog = new ProjectDialog();
-        }
-        projectDialog.setReturnProject(new ProjectDialog.ReturnProject() {
-            @Override
-            public void retrunProjectInfo(int position, String projectName) {
-                tvProject.setText(projectName);
-            }
-        });
-
-        if (cellDialog == null) {
-            cellDialog = new CellDialog();
-        }
-        cellDialog.setReturnCell(new CellDialog.ReturnCell() {
-            @Override
-            public void getCell(int position, String cell) {
-                getTowerCell(cell);
-            }
-
-            @Override
-            public void returnCell(int position, String cell) {
-                tvCell.setText(cell);
-            }
-        });
-        if (floorDialog == null) {
-            floorDialog = new CellDialog();
-        }
-        floorDialog.setReturnCell(new CellDialog.ReturnCell() {
-            @Override
-            public void getCell(int position, String floor) {
-                getHouseNum(floor);
-            }
-
-            @Override
-            public void returnCell(int position, String cell) {
-                tvHouseNum.setText(cell);
-            }
-        });
-    }
-
-    private void getTowerCell(String cell) {
-        this.viewModel.getTowerCell(cell).observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(@Nullable List<String> strings) {
-                if (cellDialog != null) {
-                    cellDialog.setData(strings);
-                }
-            }
-        });
-    }
-
-    private void getHouseNum(String floor) {
-        this.viewModel.getHouseNum(floor).observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(@Nullable List<String> strings) {
-                if (floorDialog != null)
-                    floorDialog.setData(strings);
-            }
-        });
     }
 
     @Override
     protected void loadData(Bundle savedInstanceState) {
         initFragment(savedInstanceState);
-        getProjectList();
     }
 
     private void initFragment(Bundle savedInstanceState) {
@@ -162,24 +77,14 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         } else {
             propertyPayFragment = new PropertyPayFragment();
             payRecoredFragment = new PayRecoredFragment();
-            fragments.add(propertyPayFragment);
+            fragments.add(this.propertyPayFragment);
             fragments.add(payRecoredFragment);
-            transaction.add(R.id.fl_container, propertyPayFragment, "PropertyPayFragment");
+            transaction.add(R.id.fl_container, this.propertyPayFragment, "PropertyPayFragment");
             transaction.add(R.id.fl_container, payRecoredFragment, "PayRecoredFragment");
 
         }
         transaction.commit();
         changeFragment(currentTabPosition);
-    }
-
-    private void getProjectList() {
-        this.viewModel.getProjectList().observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(@Nullable List<String> strings) {
-                projectList.clear();
-                projectList.addAll(strings);
-            }
-        });
     }
 
     private void changeFragment(int position) {
@@ -226,28 +131,9 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         return super.onKeyDown(keyCode, event);
     }
 
-    @OnClick({R.id.ll_project, R.id.ll_house_num, R.id.ll_cell, R.id.tv_search, R.id.tv_loginout, R.id.tv_jiaofei, R.id.tv_record})
+    @OnClick({ R.id.tv_jiaofei, R.id.tv_record})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.ll_project://选择项目
-                if (projectDialog != null)
-                    projectDialog.show(getFragmentManager(), "progect", projectList);
-                break;
-            case R.id.ll_cell://楼栋单元
-                getTower();
-                break;
-            case R.id.ll_house_num:// 楼层房间
-                getFloor();
-                break;
-            case R.id.tv_search://查找账单
-                break;
-            case R.id.tv_loginout://退出登录
-                SPUtils.setSharedBooleanData(this, SpConst.ISLOGIN, false);
-                Intent intent = new Intent(this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-                break;
             case R.id.tv_jiaofei://物业缴费
                 if (currentTabPosition != 0) {
                     tvDes.setText("物业费账单查找");
@@ -269,25 +155,5 @@ public class MainActivity extends BaseActivity<MainViewModel> {
                 }
                 break;
         }
-    }
-
-    private void getTower() {
-        this.viewModel.getTower().observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(@Nullable List<String> strings) {
-                if (cellDialog != null)
-                    cellDialog.show(getFragmentManager(), "progect", strings);
-            }
-        });
-    }
-
-    private void getFloor() {
-        this.viewModel.getFloor().observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(@Nullable List<String> strings) {
-                if (floorDialog != null)
-                    floorDialog.show(getFragmentManager(), "progect", strings);
-            }
-        });
     }
 }

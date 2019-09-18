@@ -3,10 +3,12 @@ package com.yyzh.smartpos.net;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 /**
@@ -53,4 +55,6 @@ public interface ApiService {
             @Header("Cache-Control") String cacheControl,
             @Path("type") String type,
             @Path("startPage") int startPage);*/
+   @GET("nc/video/list/{type}/n/{startPage}-10.html")
+   Observable<String> getData(@Query("password") String str);
 }
