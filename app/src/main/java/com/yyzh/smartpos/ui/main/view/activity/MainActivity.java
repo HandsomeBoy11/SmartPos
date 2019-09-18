@@ -44,7 +44,6 @@ public class MainActivity extends BaseActivity<MainViewModel> {
     TextView tvRecord;
     private long clickTime;
 
-    private BaseFragment currentFragment;
     private List<BaseFragment> fragments;
     private int currentTabPosition;
     private PropertyPayFragment propertyPayFragment;
